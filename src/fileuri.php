@@ -14,12 +14,17 @@ function fileuri($path, $basePath = null)
     if (!preg_match('/^.+\:\/\/.*/', $path)) {
         // Fix relative path
         if (preg_match('#^(\w|\.)[^\:]#', $path)) {
-            if (!is_string($basePath)) {
-                return false;
+            if (is_string($basePath)) {
+                $basePath = rtrim($basePath, '/');
+                $basePath = rtrim($basePath, '\\');
+                $path     = $basePath.'/'.$path;
+            } else {
+                $path     = realpath($path);
+                
+                if (!$path) {
+                    return false;
+                }
             }
-            $basePath = rtrim($basePath, '/');
-            $basePath = rtrim($basePath, '\\');
-            $path     = $basePath.'/'.$path;
         }
         
         // Fix blackslashes

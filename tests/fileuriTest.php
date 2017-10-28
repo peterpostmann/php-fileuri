@@ -58,7 +58,7 @@ class fileuriTest extends \PHPUnit_Framework_TestCase
             ['file.txt',                        '\\\\server',       'file://server/file.txt'],
             ['file.txt',                        '\\\\server\\',     'file://server/file.txt'],
             ['abc/../file.txt',                 '/home/user/',      'file:///home/user/file.txt'],
-            ['../file.txt',                     '/home/user/abc',   'file:///home/user/file.txt'],  
+            ['../file.txt',                     '/home/user/abc',   'file:///home/user/file.txt'],
         ];
     }
     
@@ -86,5 +86,13 @@ class fileuriTest extends \PHPUnit_Framework_TestCase
     function test_file_get_contents_with_fileuri($path)
     {
         $this->assertSame('test', file_get_contents(urldecode(fileuri($path, __DIR__))));
+    }
+    
+    /**
+     * @dataProvider file_list
+     */
+    function test_file_get_contents_with_relative_paths($path)
+    {
+        $this->assertSame('test', file_get_contents(urldecode(fileuri('tests/'.$path))));
     }
 }
