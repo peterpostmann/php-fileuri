@@ -1,5 +1,7 @@
 <?php
 
+namespace peterpostmann;
+
 /**
  * Returns a file uri from a (relative) path
  *

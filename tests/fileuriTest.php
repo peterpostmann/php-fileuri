@@ -1,8 +1,9 @@
 <?php
 
+use function peterpostmann\fileuri;
+
 class fileuriTest extends \PHPUnit_Framework_TestCase
 {
-    
     public function paths()
     {
         return [

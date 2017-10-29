@@ -62,6 +62,8 @@ function parseReference($uri)
 
 ~~~PHP
 
+use function peterpostmann\fileuri;
+
 string fileuri ( string path [, string basePath] ) 
 
 ~~~
@@ -73,6 +75,8 @@ string fileuri ( string path [, string basePath] )
 
 
 ~~~PHP
+
+use function peterpostmann\fileuri;
 
 // Absolute Path
 echo fileuri('/path/to/file.ext');
@@ -109,6 +113,8 @@ The function returns false if a relative path is given without a base path.
 
 ~~~PHP
 
+use function peterpostmann\fileuri;
+
 // Relative Path without base path
 var_dump(fileuri('relative/path/to/file.ext'));
 
@@ -127,6 +133,8 @@ boolean false
 
 ~~~PHP
 
+use function peterpostmann\fileuri;
+
 // Absolute Path
 $uri = fileuri('/path/to/file.ext');
 
@@ -134,7 +142,7 @@ var_dump(file_get_contents(urldecode($uri)));
 
 ~~~
 
-`file_get_contents` does not normalize Urls, therefore file URIs cannot be used directly.
+`file_get_contents` does not normalize urls, therefore file URIs cannot be used directly.
 
 ## License
 
