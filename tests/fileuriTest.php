@@ -94,6 +94,23 @@ class fileuriTest extends \PHPUnit_Framework_TestCase
      */
     function test_file_get_contents_with_relative_paths($path)
     {
-        $this->assertSame('test', file_get_contents(urldecode(fileuri('tests/'.$path))));
+        $this->assertSame('test', file_get_contents(urldecode(fileuri('tests/'.$path, null, true))));
+    }
+    
+    public function relative_file_behavior()
+    {
+        return [
+            ['tests/fixtures/file.txt', false,     false],
+            ['tests/fixtures/file.txt', true,       true]
+        ];
+    }
+    
+    /**
+     * @dataProvider relative_file_behavior
+     */
+    function test_it_resolves_relative_paths_only_when_asked_to($path, $resolve, $success)
+    {
+        echo fileuri($path, null, $resolve);
+        $this->assertSame($success, is_string(fileuri($path, null, $resolve)));
     }
 }

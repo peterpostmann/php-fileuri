@@ -7,10 +7,11 @@ namespace peterpostmann;
  *
  * @param string $path
  * @param string $basePath      Used if path is relative
+ * @param bool   $resolve       Resolve relative paths
 
- * @return string       Returns false if relative path is given but no base path
+ * @return string|bool
  */
-function fileuri($path, $basePath = null)
+function fileuri($path, $basePath = null, $resolve = false)
 {
     // Check protocol
     if (!preg_match('/^.+\:\/\/.*/', $path)) {
@@ -21,7 +22,7 @@ function fileuri($path, $basePath = null)
                 $basePath = rtrim($basePath, '\\');
                 $path     = $basePath.'/'.$path;
             } else {
-                $path     = realpath($path);
+                $path = $resolve ? realpath($path) : null;
                 
                 if (!$path) {
                     return false;
