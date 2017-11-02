@@ -1,6 +1,7 @@
 # fileuri
 
 [![Software License][ico-license]](LICENSE.md)
+[![Build Status][ico-travis]][link-travis]
 
 Returns a file uri from a (relative) path
 
@@ -11,6 +12,8 @@ Returns a file uri from a (relative) path
 ```bash
 composer require peterpostmann/fileuri
 ```
+
+If you dont want to use composer just copy the `fileuri.php` file and include it into your project.
 
 ## Why
 
@@ -148,6 +151,9 @@ var_dump(file_get_contents(urldecode($uri)));
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
+[link-travis]: https://travis-ci.org/peterpostmann/php-fileuri
+
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/peterpostmann/php-fileuri/master.svg?style=flat-square
 
 [1]: https://tools.ietf.org/html/rfc3986/
