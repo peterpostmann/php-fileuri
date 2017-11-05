@@ -1,8 +1,8 @@
 <?php
 
-use function peterpostmann\fileuri;
+use function peterpostmann\uri\fileuri;
 
-class fileuriTest extends \PHPUnit_Framework_TestCase
+class FileuriTest extends \PHPUnit_Framework_TestCase
 {
     public function paths()
     {
@@ -21,7 +21,7 @@ class fileuriTest extends \PHPUnit_Framework_TestCase
             ['//10.0.0.1/smb/path/file.txt',                    'file://10.0.0.1/smb/path/file.txt'],
             
             // Directory traversal
-            ['/home/user/abc/../file.txt',                      'file:///home/user/file.txt'],
+            ['/home/user/abc/../file.txt',                      'file:///home/user/abc/../file.txt'],
             
             // File uri is unchanged
             ['file:///path/to/abc/../file.ext',                 'file:///path/to/abc/../file.ext'],
@@ -53,13 +53,16 @@ class fileuriTest extends \PHPUnit_Framework_TestCase
             ['file.txt',                        '',                 'file:///file.txt'],
             ['file.txt',                        '/',                'file:///file.txt'],
             ['relative/path/to/file.ext',       'C:\\',             'file:///C:/relative/path/to/file.ext'],
+            ['relative/path/to/file.ext',       null,               false],
             ['relative/path/to/file.ext',       'C:',               'file:///C:/relative/path/to/file.ext'],
             ['fileInCwd.ext',                   '/home/user/',      'file:///home/user/fileInCwd.ext'],
             ['fileInCwd.ext',                   '/home/user',       'file:///home/user/fileInCwd.ext'],
             ['file.txt',                        '\\\\server',       'file://server/file.txt'],
             ['file.txt',                        '\\\\server\\',     'file://server/file.txt'],
-            ['abc/../file.txt',                 '/home/user/',      'file:///home/user/file.txt'],
-            ['../file.txt',                     '/home/user/abc',   'file:///home/user/file.txt'],
+            ['abc/../file.txt',                 '/home/user/',      'file:///home/user/abc/../file.txt'],
+            ['../file.txt',                     '/home/user/abc',   'file:///home/user/abc/../file.txt'],
+            ['../file.txt',                     null,               false],
+            ['/file.txt',                       '/home/user/abc',   'file:///file.txt'],
         ];
     }
     
@@ -69,48 +72,5 @@ class fileuriTest extends \PHPUnit_Framework_TestCase
     function test_uri_matches_expected_results_with_given_basePath($path, $basePath, $uri)
     {
         $this->assertSame($uri, fileuri($path, $basePath));
-    }
-    
-    public function file_list()
-    {
-        return [
-            ['fixtures/file.txt'],
-            ['fixtures/ #%{}^`.txt'],
-            ['fixtures/exampleㄓ.txt'],
-            ['fixtures/My Documents/file.txt'],
-        ];
-    }
-    
-    /**
-     * @dataProvider file_list
-     */
-    function test_file_get_contents_with_fileuri($path)
-    {
-        $this->assertSame('test', file_get_contents(urldecode(fileuri($path, __DIR__))));
-    }
-    
-    /**
-     * @dataProvider file_list
-     */
-    function test_file_get_contents_with_relative_paths($path)
-    {
-        $this->assertSame('test', file_get_contents(urldecode(fileuri('tests/'.$path, null, true))));
-    }
-    
-    public function relative_file_behavior()
-    {
-        return [
-            ['tests/fixtures/file.txt', false,     false],
-            ['tests/fixtures/file.txt', true,       true]
-        ];
-    }
-    
-    /**
-     * @dataProvider relative_file_behavior
-     */
-    function test_it_resolves_relative_paths_only_when_asked_to($path, $resolve, $success)
-    {
-        echo fileuri($path, null, $resolve);
-        $this->assertSame($success, is_string(fileuri($path, null, $resolve)));
     }
 }
